@@ -1,0 +1,28 @@
+{
+  "name": "basketballwebapp",
+  "version": "1.0.0",
+  "description": "a web app that allows users to book basketball seshs with their friends",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdirahmanhassann/basketballapp.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "react",
+    "mongoDB"
+  ],
+  "author": "Abdirahman hassan, Abdirahman Quraani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdirahmanhassann/basketballapp/issues"
+  },
+  "homepage": "https://github.com/abdirahmanhassann/basketballapp#readme",
+  "dependencies": {
+    "git": "^0.1.5"
+  }
+}
