@@ -17,7 +17,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 0px 19px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
@@ -25,13 +25,13 @@ body {
 
 .nav {
   display: flex;
-  gap: 20px;
+  gap: 50px;
 }
 
 .nav a {
   text-decoration: none;
   color: #000;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .hero-section {
@@ -70,16 +70,17 @@ body {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-}
-
-.stat {
-  flex: 1;
-  min-width: 150px;
-  margin: 20px;
+  }
+  
+  .stat {
+    flex: 1;
+    min-width: 150px;
+    margin: 20px;
 }
 
 .pitches-section {
-  padding: 50px 20px;
+  padding: 100px 20px;
+
 }
 
 .pitches {
@@ -150,18 +151,25 @@ body {
   gap:10px;
   justify-content:space-between;
 }
+.rowdiv2{
+    display: flex;
+    place-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
 .searchDiv{
-  padding: 18px 11px;
-  background: #efefef;
-  width: 70%;
+  padding: 45px 12px;
+  background: #eef0fc;
+  width: 65%;
   margin: auto;
   border-radius: 8px;
+  border:1px solid gray;
   color: #04004a;
   font-size: larger;
   display: flex;
   flex-direction: column;
   gap: 21px;
-  box-shadow: 0px 0px 9px 1px #6a6a6a;
+
 }
 p{
   margin:0;
@@ -171,7 +179,51 @@ input{
   width:100%;
   padding:5px;
   border-radius:3px;
-  border:1px solid lightgray
-  ;
+  border:1px solid lightgray;
 
+}
+.thinpara{
+  font-weight: lighter;
+}
+.headerLarge{
+  font-size: 45px;
+  margin: 4px;
+}
+.footer {
+  background-color: #000;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  color:white;
+}
+
+.footer a {
+  text-decoration: none;
+  color: white;
+  margin: 0 10px;
+}
+
+.footer p {
+  margin: 10px 0;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  margin: 5px 10px;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+  }
 }
