@@ -1,25 +1,15 @@
 // App.jsx
 import React from 'react';
 import './App.css';
+import Header from './reusable/header';
+import Footer from './reusable/Footer';
+import GoogleButton from 'react-google-button'
 
 function App() {
   return (
     <div className="container">
     
-      <header className="header">
-        <h1>Basketball Addicts</h1>
-        <nav className="nav">
-          <a href="/">Home</a>
-          <a href="/">About</a>
-          <a href="/">Play Football</a>
-          <a href="/">Impact</a>
-          <a href="/">Contact</a>
-        </nav>
-        <div className='buttonDiv'>
-          <button className='grayButton'>Register</button>
-          <button className='redButton'>Sign in</button>
-        </div>
-      </header>
+     <Header/>
       <section className="hero-section">
       <div className='rowdiv' style={{justifyContent:'center',fontSize:'40px'}}>
         <h2>Play Basketball</h2>
@@ -98,14 +88,7 @@ function App() {
           </div>
         </div>
       </section>
-      <footer className="footer">
-        <div className="footer-links">
-          <a href="/">Privacy Policy</a>
-          <a href="/">Terms of Service</a>
-          <a href="/">Contact Us</a>
-        </div>
-        <p>&copy; 2024 Footy Addicts. All rights reserved.</p>
-      </footer>
+    <Footer/>
     </div>
   );
 }
