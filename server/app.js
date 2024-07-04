@@ -11,7 +11,12 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { Sequelize } = require('sequelize');
-
+const dotenv=require('dotenv')
+const bcrypt=require('bcryptjs');
+const { pool,createUsersTable } = require('./Db/db.js');
+const getUsers = require('./Db/getDb.js');
+dotenv.config()
+const users=[]
 // Middleware to parse JSON bodies
 app.use(express.json()); 
 app.use(cookieParser());
@@ -19,57 +24,69 @@ app.use(cors({
   credentials: true,               // Allow cookies to be sent
   origin: true, // Replace with your React app's URL
 }));
+createUsersTable();
 
 
+app.post('/register', async (req, res) => {
+  const { username,firstname,lastname,email, password } = req.body;
+
+  console.log(req.body)
+  console.log(username,firstname,lastname,email,password)
+  // Check if user already exists
+  const emailExists = users.find(user => user.email === email);
+  if (emailExists) {
+    return res.status(400).json({ email:true });
+  }
+  const usernameExists = users.find(user => user.email === email);
+  if (usernameExists) {
+    return res.status(400).json({ username:true });
+  }
+
+  // Hash the password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  // Save user
+  const user = { email, password: hashedPassword };
+   await pool.query(
+    'INSERT INTO users (username, firstname, lastname, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    [username, firstname, lastname, email, hashedPassword]
+);
+
+await getUsers();
+
+  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
+  res.json({ token });
+  });
 
 
-// Define a simple route
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+// User login route
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+console.log(req.body.email,req.body.password)
+  // Check if user exists
+  const user = users.find(user => user.email === email);
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid email or password' });
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) {
+    return res.status(400).json({ message: 'Invalid email or password' });
+  }
+
+  // Create and assign a token
+  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
+  res.json({ token });
 });
 
-// Define another route
-app.get('/about', (req, res) => {
-  res.send('About Page');
-});
 
-// Define a route with a parameter
-app.get('/user/:name', (req, res) => {
-  res.send(`Hello, ${req.params.name}`);
-});
-
-// Define a POST route
-app.post('/data', (req, res) => {
-  res.json(req.body);
-});
 
 app.use('/req',reqauth);
 
 app.use('/oauth',oauth);
 
-app.get('/po', (req, res) => {
-  console.log(req.cookies)
-  if (!req.token) {
-    // res.cookie('token', 'token', {
-    //   maxAge: 24 * 60 * 60 * 1000 * 10,
-    //   httpOnly: true,
-    //   sameSite: 'None',
-    //   secure: true, 
-    //   domain: 'localhost', // Domain setting
-    // });
-        
-    return res.status(401).send('Unauthorized');
-  }
-  console.log('logged in')
-  res.send( `you are authenticated`);
-});
 
-
-// app.get('/po',authenticateJWT,(req,res,next)=>{
-//   console.log('u are logged in via /po')
-//   res.send('logged in')
-// })
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

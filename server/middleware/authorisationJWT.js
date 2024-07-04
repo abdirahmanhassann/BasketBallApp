@@ -1,25 +1,23 @@
 const express = require('express')
 const jwt=require('jsonwebtoken')
 const bcrypt=require('bcryptjs');
-
+const dotenv=require('dotenv')
+dotenv.config(); 
 
 const authenticateJWT = (req, res, next) => {
-   console.log(req.cookies.token)
-    const token = req.cookies.token;
-    if (!token) {
+  const token = req.header('Authorization');
 
-      return res.status(401).send('Access denied. No token provided.');
-    }
+  if (!token) {
+    return res.status(401).json({ message: 'Access Denied. No token provided.' });
+  }
 
-    try {
-      // Verify and decode the token
-      const decoded = jwt.verify(token, secretKey);
-      req.user = decoded;
-      next();
-    } catch (err) {
-      console.log(err)
-      res.status(401).send('Invalid token');
-    }
-  };
+  try {
+    const verified = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = verified;
+    next();
+  } catch (error) {
+    res.status(400).json({ message: 'Invalid Token' });
+  }
+};
 
   module.exports=authenticateJWT;
