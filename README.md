@@ -1,20 +1,20 @@
 ﻿# BasketBallApp
 
-# Tech Stack
-- MERN Stack/ poential Postgress
-- Self hosted via VM/ Potentially AWS
+## Tech Stack
+- MERN
+- Self host/AWS
 
-# Requirements
-- Basketball website to allow players to meetup
+## Requirements
+- Basketball website to allow players to meetup and play
 - Login functionality
-- Search within an area
-- All mathces within the area served to the player
-- Hosts to allow any one in, or get approved one by one
-- Hosts to accept/reject incoming players
-- Track whether a player turns up
-- Track whether a host made a game
+- Search within a radius
+- All matches within the area displayed to a user
+- Hosts can open a game up to anyone, or have an approval process to vet the players
+- Host must then accept/reject the player
+- Track which players turned up
+- Track which hosts made the game happen
 
-# Tech
+## Tech
 - Using JWT and google auth
-- Tables: User, Game, Review
-- Figma Design (Insert Link)
+- Database schema will consist of a user table, game table, reviews table
+- Figma design (to be linked in the future)

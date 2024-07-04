@@ -15,6 +15,8 @@ const dotenv=require('dotenv')
 const bcrypt=require('bcryptjs');
 const { pool,createUsersTable } = require('./Db/db.js');
 const getUsers = require('./Db/getDb.js');
+const checkUserExists = require('./Db/checkUserExists.js');
+const logincheck = require('./Db/logincheck.js');
 dotenv.config()
 const users=[]
 // Middleware to parse JSON bodies
@@ -34,13 +36,12 @@ app.post('/register', async (req, res) => {
   console.log(username,firstname,lastname,email,password)
   // Check if user already exists
   const emailExists = users.find(user => user.email === email);
-  if (emailExists) {
-    return res.status(400).json({ email:true });
-  }
-  const usernameExists = users.find(user => user.email === email);
-  if (usernameExists) {
-    return res.status(400).json({ username:true });
-  }
+
+  const userExists = await checkUserExists(username, email,'signup');
+        if (userExists) {
+            console.log('Username or email already exists.');
+            return res.status(400).json({email:true});
+        }
 
   // Hash the password
   const salt = await bcrypt.genSalt(10);
@@ -65,16 +66,19 @@ app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 console.log(req.body.email,req.body.password)
   // Check if user exists
-  const user = users.find(user => user.email === email);
+  const user  = await logincheck(email);
   if (!user) {
+    console.log('no user')
     return res.status(400).json({ message: 'Invalid email or password' });
   }
-
+  
+  console.log('passwords: ', password, user.password)
   const validPassword = await bcrypt.compare(password, user.password);
+  
   if (!validPassword) {
+    console.log('no password')
     return res.status(400).json({ message: 'Invalid email or password' });
   }
-
   // Create and assign a token
   const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
   res.json({ token });

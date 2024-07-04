@@ -44,16 +44,10 @@ console.log(
           console.log(data.token)
           alert('Login successful!');
         }
-        else if(response.username){
-            setError('Username already exists, please choose a different username')
-        } 
-        else if (response.email){
-            setError('Email already exists, please choose a different Email')
-    
-        }
 
         else {
           setError(data.message || 'An error occurred');
+        alert('Username or Email already exists')
         }
       } catch (error) {
         console.log(error)
