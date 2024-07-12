@@ -18,3 +18,4 @@
 - Using JWT and google auth
 - Database schema will consist of a user table, game table, reviews table
 - Figma design (to be linked in the future)
+

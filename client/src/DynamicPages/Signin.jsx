@@ -26,7 +26,9 @@ console.log(email.value,password.value)
           localStorage.setItem('token', data.token);
           console.log(data.token)
           alert('Login successful!');
+          navigate('/profile')
         } else {
+          alert('Email or Password is incorrect')
           setError(data.message || 'An error occurred');
         }
       } catch (error) {

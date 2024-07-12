@@ -56,7 +56,7 @@ app.post('/register', async (req, res) => {
 
 await getUsers();
 
-  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
   res.json({ token });
   });
 
@@ -68,7 +68,7 @@ console.log(req.body.email,req.body.password)
   // Check if user exists
   const user  = await logincheck(email);
   if (!user) {
-    console.log('no user')
+    console.log('no user');
     return res.status(400).json({ message: 'Invalid email or password' });
   }
   
@@ -80,12 +80,12 @@ console.log(req.body.email,req.body.password)
     return res.status(400).json({ message: 'Invalid email or password' });
   }
   // Create and assign a token
-  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
   res.json({ token });
 });
 
 
-
+app.use('/profile',authenticateJWT)
 app.use('/req',reqauth);
 
 app.use('/oauth',oauth);

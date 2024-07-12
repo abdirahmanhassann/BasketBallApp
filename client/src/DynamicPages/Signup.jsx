@@ -11,8 +11,8 @@ const SignUp = () => {
     event.preventDefault();
     const { username,firstname,lastname,email, password,repassword } = event.target.elements;
     if(password.value!==repassword.value){
-        alert('The passwords have to be same')
-        repassword.value=''
+      repassword.value=''
+        return alert('The passwords have to be same')
     }
 console.log(
     // email.value,
@@ -21,8 +21,9 @@ console.log(
    // repassword.value,
     //firstname.value,
     //lastname.value
-    )
-    try {
+  )
+
+  try {
         const response = await fetch('http://localhost:3000/register', {
           method: 'POST',
           headers: {
