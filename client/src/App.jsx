@@ -9,6 +9,7 @@ import SignIn from './DynamicPages/Signin';
 import {BrowserRouter as Router ,Route,Routes}from 'react-router-dom'
 import SignUp from './DynamicPages/Signup';
 import Profile from './DynamicPages/LoggedIn/profile';
+import { NavProvider } from './reusable/NavContext';
 
 function App() {
 const [isAuthenticated,setIsAuthenticated]=useState(false)
@@ -22,15 +23,17 @@ const [isAuthenticated,setIsAuthenticated]=useState(false)
   }, []);
 
   return (
+   <NavProvider>
 <Router>
    <Routes>
-    
+
    <Route  path='/' element={<HomePage />}exact/>
    <Route  path='/signin' element={<SignIn />}exact/>
    <Route  path='/signup' element={<SignUp />}exact/>
       <Route  path='/profile' element={isAuthenticated? <Profile />: <SignIn/>} exact/>
 </Routes>
 </Router>
+</NavProvider>
 
 );
 }

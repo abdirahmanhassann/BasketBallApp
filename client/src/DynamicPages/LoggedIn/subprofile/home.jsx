@@ -1,6 +1,7 @@
 import React from 'react'
 
 function Home() {
+    
   return (
     <div>
         <p>welcome back Lorem, ipsum.</p>

@@ -12,13 +12,13 @@ body: JSON.stringify({ token: token }),
 
 const data=await req.json()
     console.log(data)
-    if(data.ok){
+    if(!data){
+        alert('you are not authorized')
+        navigate('/signin');
 
-        alert('you are logged in')
     }
     else{
-        alert('you are not authorized')
-      //  navigate('/signin');
+        alert('you are logged in')
     }
 }
 export default auth;

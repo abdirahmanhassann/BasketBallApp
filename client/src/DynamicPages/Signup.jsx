@@ -44,6 +44,7 @@ console.log(
           localStorage.setItem('token', data.token);
           console.log(data.token)
           alert('Login successful!');
+          navigate('/profile')
         }
 
         else {
