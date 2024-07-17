@@ -17,6 +17,7 @@ const { pool,createUsersTable } = require('./Db/db.js');
 const getUsers = require('./Db/getDb.js');
 const checkUserExists = require('./Db/checkUserExists.js');
 const logincheck = require('./Db/logincheck.js');
+const getHome = require('./Db/getHome.js');
 dotenv.config()
 const users=[]
 // Middleware to parse JSON bodies
@@ -57,7 +58,7 @@ app.post('/register', async (req, res) => {
 await getUsers();
 
   const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
-  res.json({ token });
+  res.json({ token:token, userinfo:{username:username,firstname:firstname,lastname:lastname,email:email} });
   });
 
 
@@ -81,13 +82,14 @@ console.log(req.body.email,req.body.password)
   }
   // Create and assign a token
   const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
-  res.json({ token });
+  user.password= null;
+  res.json({ token:token, userinfo:user });
 });
 
 
 app.use('/profile',authenticateJWT)
 app.use('/req',reqauth);
-
+app.use('/home',getHome)
 app.use('/oauth',oauth);
 
 

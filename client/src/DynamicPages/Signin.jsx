@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { NavContext } from '../reusable/NavContext';
 const SignIn = () => {
     // const [email, setEmail] = useState('');
     // const [password, setPassword] = useState('');
     const [error, setError] = useState('');
   const navigate=useNavigate()
+  const { userInfo } = useContext(NavContext);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -25,6 +27,8 @@ console.log(email.value,password.value)
         if (response.ok) {
           localStorage.setItem('token', data.token);
           console.log(data.token)
+      //    userInfo=data.userinfo
+    //      localStorage.setItem('user', JSON.stringify(data.userInfo));
           alert('Login successful!');
           navigate('/profile')
         } else {

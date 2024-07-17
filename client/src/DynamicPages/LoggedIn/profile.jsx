@@ -8,6 +8,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import Leftprofile from './subprofile/leftprofile';
 import Home from './subprofile/home';
 import { NavContext, NavProvider } from '../../reusable/NavContext';
+import Settings from './subprofile/settings';
 
 
 function Profile() {
@@ -16,7 +17,6 @@ function Profile() {
 
     useEffect ( ()=>{
         auth('profile');
-         
     },[])
 
     const renderComponent = () => {
@@ -28,7 +28,10 @@ function Profile() {
                 return null;
                 case 'Teams':
                  //   return <Teams />;
-                    return null;
+                 return null;
+                case 'Settings':
+                 //   return <Teams />;
+                 return Settings;
           default:
             return <Home />;
         }

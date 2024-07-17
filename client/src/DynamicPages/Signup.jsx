@@ -43,6 +43,8 @@ console.log(
         if (response.ok) {
           localStorage.setItem('token', data.token);
           console.log(data.token)
+          console.log(data.token)
+          userInfo=data.userinfo
           alert('Login successful!');
           navigate('/profile')
         }
