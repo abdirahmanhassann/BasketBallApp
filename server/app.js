@@ -18,6 +18,7 @@ const getUsers = require('./Db/getDb.js');
 const checkUserExists = require('./Db/checkUserExists.js');
 const logincheck = require('./Db/logincheck.js');
 const getHome = require('./Db/getHome.js');
+const postprofile = require('./middleware/settings/postProfile.js');
 dotenv.config()
 const users=[]
 // Middleware to parse JSON bodies
@@ -86,8 +87,24 @@ console.log(req.body.email,req.body.password)
   res.json({ token:token, userinfo:user });
 });
 
+app.post('/allinfo',authenticateJWT,async(req,res)=> { 
+  const {email}=req.body;
+  console.log('email:',email)
+  await pool.query(
+    'SELECT * FROM users WHERE email = $1',
+    [email],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.status(200).json(results.rows);
+    } 
+  )
 
+}
+  )
 app.use('/profile',authenticateJWT)
+app.use('/settings/profile',authenticateJWT,postprofile)
 app.use('/req',reqauth);
 app.use('/home',getHome)
 app.use('/oauth',oauth);

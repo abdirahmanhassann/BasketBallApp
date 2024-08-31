@@ -366,3 +366,188 @@ outline: none;
 .navdivs :hover{
   background-color: rgba(207, 1, 43, 0.9) ;
 }
+.settings-container {
+  width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.settings-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.settings-tabs button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  color: #555;
+  font-size: 14px;
+}
+
+.settings-tabs button:hover {
+  background-color: #e0e0e0;
+}
+
+.settings-tabs .active-tab {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 14px;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+  border-color: #d32f2f;
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.gender-options {
+  display: flex;
+  gap: 10px;
+}
+
+.gender-options label {
+  font-size: 14px;
+}
+
+.profile-pic-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+input[type="file"] {
+  font-size: 14px;
+}
+
+small {
+  color: #888;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+}
+
+.submit-btn {
+  width:100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #d32f2f;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #b71c1c;
+}
+
+@media (max-width: 600px) {
+  .settings-container {
+    padding: 10px;
+  }
+
+  .settings-tabs {
+    flex-direction: column;
+  }
+
+  .settings-tabs button {
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  .form-group input, 
+  .form-group select, 
+  .form-group textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .gender-options {
+    flex-direction: column;
+  }
+
+  .profile-pic {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.settings-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.settings-tabs button.active-tab {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+.settings-tabs button:hover {
+  background-color: #e0e0e0;
+}
+
+.settings-content {
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

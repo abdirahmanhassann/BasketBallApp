@@ -9,9 +9,10 @@ import Leftprofile from './subprofile/leftprofile';
 import Home from './subprofile/home';
 import { NavContext, NavProvider } from '../../reusable/NavContext';
 import Settings from './subprofile/settings';
+import Profile from './subprofile/profile';
 
 
-function Profile() {
+function LoggedInLandingPage() {
     const navigate=useNavigate()
     const { selectedNav } = useContext(NavContext);
 
@@ -29,9 +30,11 @@ function Profile() {
                 case 'Teams':
                  //   return <Teams />;
                  return null;
+                case 'profile':
+                   return <Profile />;
                 case 'Settings':
                  //   return <Teams />;
-                 return Settings;
+                 return <Settings/>;
           default:
             return <Home />;
         }
@@ -49,4 +52,4 @@ function Profile() {
       );    
 }
 
-export default Profile
+export default LoggedInLandingPage

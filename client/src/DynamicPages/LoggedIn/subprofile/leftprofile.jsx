@@ -16,11 +16,11 @@ function Leftprofile() {
             </div>
 
             <div className='ProfileDivider'>
-            <div className='profileDiveSub'>
+            <div className='profileDiveSub' onClick={() => setSelectedNav('profile')}>
             <FaRegUser />
                 <p>Profile</p>
             </div>
-            <div className='profileDiveSub'>
+            <div className='profileDiveSub' onClick={() => setSelectedNav('startgame')}>
             <IoMdAddCircleOutline />
                 <p>Start a game</p>
             </div>

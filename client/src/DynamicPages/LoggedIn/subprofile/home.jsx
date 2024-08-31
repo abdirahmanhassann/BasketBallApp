@@ -13,11 +13,12 @@ function Home() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email:email})
+      body: JSON.stringify({email:email})
     })
     .then(res=>res.json())
     .then(data=>{
-      console.log(data)
+
+    console.log(data)
     setUserInfo1(data)
     setUserInfo(data)
     })
@@ -25,6 +26,7 @@ function Home() {
   },[])
   return (
     <div>
+      
         <p>welcome back {userInfo1.user? userInfo1.user.firstname + ' ' + userInfo1.user.lastname : '...'}.</p>
         <div style={{textAlign:'center'}}>
      <h3>

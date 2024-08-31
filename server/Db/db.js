@@ -2,9 +2,9 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    user: 'abdirahman',
+    user: 'postgres',
     host: 'localhost',
-    database: 'Basketball',
+    database: 'basketball',
     password: 'abdi',
     port: 5432,
 });
@@ -17,7 +17,13 @@ const createUsersTable = async () => {
             firstname VARCHAR(50) NOT NULL,
             lastname VARCHAR(50) NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            gender VARCHAR(50),
+            bio TEXT,
+            phone VARCHAR(50),
+            favourite_position VARCHAR(50)
+
+
         );
     `;
     try {

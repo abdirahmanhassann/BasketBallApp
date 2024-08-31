@@ -6,7 +6,7 @@ dotenv.config();
 
 const authenticateJWT = (req, res, next) => {
   const token = req.body.token;
-console.log(token)
+console.log('token is:',token)
   if (!token) {
     return res.status(401).json({ message: 'Access Denied. No token provided.' });
   }

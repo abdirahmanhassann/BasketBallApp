@@ -8,7 +8,7 @@ import HomePage from './DynamicPages/HomePage';
 import SignIn from './DynamicPages/Signin';
 import {BrowserRouter as Router ,Route,Routes}from 'react-router-dom'
 import SignUp from './DynamicPages/Signup';
-import Profile from './DynamicPages/LoggedIn/profile';
+import LoggedInLandingPage from './DynamicPages/LoggedIn/loggedInLandingPage';
 import { NavProvider } from './reusable/NavContext';
 
 function App() {
@@ -30,7 +30,7 @@ const [isAuthenticated,setIsAuthenticated]=useState(false)
    <Route  path='/' element={<HomePage />}exact/>
    <Route  path='/signin' element={<SignIn />}exact/>
    <Route  path='/signup' element={<SignUp />}exact/>
-      <Route  path='/profile' element={isAuthenticated? <Profile />: <SignIn/>} exact/>
+      <Route  path='/profile' element={isAuthenticated? <LoggedInLandingPage />: <SignIn/>} exact/>
 </Routes>
 </Router>
 </NavProvider>
