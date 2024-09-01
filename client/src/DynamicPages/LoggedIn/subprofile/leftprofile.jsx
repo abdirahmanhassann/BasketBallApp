@@ -10,10 +10,13 @@ function Leftprofile() {
 
   return (
 <div className='profileDiv'>
-            <div className='profileDivSub'>
-                <p>{userInfo&& userInfo.user.firstname} {userInfo&& userInfo.user.lastname}</p>
-                <p>@{userInfo && userInfo.user.username}</p>
+            <div className='profileDivSub' style={{display:'flex',flexDirection:'row',alignItems:'start',gap:'10px',paddingInline:'10px',textAlignLast:'start'}}>
+                <img src='../../../../StockImgs/Userimg.png' style={{width:'50px',borderRadius:'50%'}}/>
+            <div className='profileDivSub' style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'start'}}>
+                <p style={{fontWeight:'bold',fontSize:'12px',color:'#494949'}}>{userInfo&& userInfo.user.firstname} {userInfo&& userInfo.user.lastname}</p>
+                <p style={{color:'gray', fontWeight:'normal',fontSize:'12px'}}>@{userInfo && userInfo.user.username}</p>
             </div>
+                </div>
 
             <div className='ProfileDivider'>
             <div className='profileDiveSub' onClick={() => setSelectedNav('profile')}>

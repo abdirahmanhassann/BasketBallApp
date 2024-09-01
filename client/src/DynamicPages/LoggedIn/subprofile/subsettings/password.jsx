@@ -1,30 +1,62 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { NavContext } from '../../../../reusable/NavContext';
 
 const Password = () => {
-  // State for storing password fields
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [reNewPassword, setReNewPassword] = useState('');
-  const [error, setError] = useState('');
+    const { userInfo,selectedNav, setSelectedNav } = useContext(NavContext);
+    // State for storing password fields
+   const[email,setEmail]=useState(userInfo.user.email)
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [reNewPassword, setReNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const token=localStorage.getItem('token')
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    // Function to handle form submission
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      // Clear previous error/success messages
+      setError('');
+      setSuccess('');
+  
+      if (newPassword !== reNewPassword) {
+        setError('New password and confirm password do not match');
+        return;
+      }
+  
+      try {
+        // Sending current password and new password to the backend
+        const response = await fetch('http://localhost:3000/settings/changepassword', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email:email, currentPassword:currentPassword,newPassword:newPassword,token:token }),
+        });
+  
+        const data = await response.json();
+  
+        if (!response.ok) {
+          setError(data.error || 'Failed to change password');
+          return;
+        }
+  
+        setSuccess('Password changed successfully');
+        alert(data.message)
+        setCurrentPassword('');
+        setNewPassword('');
+        setReNewPassword('');
+        setConfirmPassword('');
+      } catch (err) {
 
-    if (newPassword !== reNewPassword) {
-      setError('New passwords do not match');
-      return;
-    }
-
-    // Handle the form submission logic here, e.g., API call
-
-    // Clear the form
-    setCurrentPassword('');
-    setNewPassword('');
-    setReNewPassword('');
-    setError('');
-  };
-
+        console.error('Error changing password:', err);
+        setError('An unexpected error occurred');
+        alert(error)
+      }
+    };
+  
   return (
       <form onSubmit={handleSubmit} className="password-form">
         <div className="form-group">

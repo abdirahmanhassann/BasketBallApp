@@ -302,10 +302,7 @@ outline: none;
 .profileDiv{
   width: 200px;
   height: 92vh;
-  scroll-behavior: auto;
-  overflow-y: scroll;
   text-align-last: center;
-  background: #ededed;
   padding-top: 19px;
 }
 
@@ -318,11 +315,12 @@ outline: none;
   align-items: center;
   height: 32px;
   cursor: pointer;
-  width: 100%;
+  width: 82%;
 }
 
 .profileDiveSub:hover {
-  background: #e1e1e17d;
+ 
+  background: #eeeeee7d;
   color: rgb(71 71 71);
 }
 
@@ -331,7 +329,7 @@ outline: none;
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-top: 59px;
+  margin-top: 10px;
 }
 ::-webkit-scrollbar {
   width: 13px;
@@ -373,6 +371,9 @@ outline: none;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;
+    height: 86vh;
+    
 }
 
 h2 {

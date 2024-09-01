@@ -94,7 +94,7 @@ useEffect(() => {
           <label>Profile Picture</label>
           <div className="profile-pic-container">
             <img
-              src={formData.profilePic || '../../../stockImgs/userImg.png'}
+              src={ '../../../stockImgs/userImg.png'}
               alt="Profile"
               className="profile-pic"
             />
@@ -149,6 +149,7 @@ useEffect(() => {
             name="bio"
             placeholder="Tell us about yourself..."
             value={formData.bio}
+            maxLength={100}
             onChange={handleChange}
           ></textarea>
         </div>
@@ -157,8 +158,8 @@ useEffect(() => {
           <input
             type="tel"
             id="phone"
-            min={11}
-            max={11}
+            minLength={11}
+            maxLength={11}
             name="phone"
             placeholder="Update and verify your phone number"
             value={formData.phone}

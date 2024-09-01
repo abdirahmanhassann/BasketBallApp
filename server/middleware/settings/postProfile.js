@@ -7,8 +7,8 @@ const { pool,createUsersTable } = require('../../Db/db.js');
 
 // POST endpoint to insert user data
 async function postprofile( req, res) {
-  const { username, email, gender, bio, phone, favoritePosition } = req.body.formData;
-console.log('user is being posted:',username,email,gender,bio,phone,favoritePosition)
+  const { username, email, gender, bio, phone, favourite_position } = req.body.formData;
+console.log('user is being posted:',username,email,gender,bio,phone,favourite_position)
   try {
     const query = `
       UPDATE users 
@@ -21,8 +21,8 @@ console.log('user is being posted:',username,email,gender,bio,phone,favoritePosi
       WHERE email = $5
       RETURNING *;
     `;
-    const values = [gender, bio, phone, favoritePosition, email,username];
-
+    1
+    const values = [gender, bio, phone, favourite_position, email,username];
     const result = await pool.query(query, values);
     
     if (result.rows.length === 0) {
