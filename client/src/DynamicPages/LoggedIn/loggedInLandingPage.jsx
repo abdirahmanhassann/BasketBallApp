@@ -10,6 +10,7 @@ import Home from './subprofile/home';
 import { NavContext, NavProvider } from '../../reusable/NavContext';
 import Settings from './subprofile/settings';
 import Profile from './subprofile/profile';
+import StartGame from './subprofile/StartGame';
 
 
 function LoggedInLandingPage() {
@@ -27,8 +28,8 @@ function LoggedInLandingPage() {
             case 'Venues':
                 //return <Venues />;
                 return null;
-                case 'Teams':
-                 //   return <Teams />;
+                case 'startgame':
+                    return <StartGame/>;
                  return null;
                 case 'profile':
                    return <Profile />;

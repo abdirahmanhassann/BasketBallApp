@@ -11,8 +11,10 @@ function EditProfile() {
         gender: '',
         bio: '',
         phone: '',
+
         favourite_position: '',
-        profilePic: '', // Initially no picture
+        profilePic: '', // Initially no picture 
+        
       });
       const [errors, setErrors] = useState({});
 
