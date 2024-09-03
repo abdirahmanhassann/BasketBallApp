@@ -10,16 +10,16 @@ import Home from './subprofile/home';
 import { NavContext, NavProvider } from '../../reusable/NavContext';
 import Settings from './subprofile/settings';
 import Profile from './subprofile/profile';
-import StartGame from './subprofile/StartGame';
+import StartGame from './subprofile/startgame/StartGame';
 
 
 function LoggedInLandingPage() {
     const navigate=useNavigate()
     const { selectedNav } = useContext(NavContext);
 
-    useEffect ( ()=>{
-        auth('profile');
-    },[])
+    // useEffect ( ()=>{
+    //     auth('profile');
+    // },[])
 
     const renderComponent = () => {
         switch (selectedNav) {

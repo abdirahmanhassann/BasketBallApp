@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import venue from '../../../reusable/venues.json';
+import venue from '../../../../reusable/venues.json';
+import { useNavigate } from 'react-router-dom';
 const StartGame = () => {
     const [venues, setVenues] = useState(venue);
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const venuesPerPage = 5; // Number of venues per page
-
+    const navigate=useNavigate()    
 
 
 
@@ -49,7 +50,7 @@ const StartGame = () => {
             />
             <ul className="venue-list">
                 {currentVenues.map((venue, index) => (
-                    <li key={index} className="venue-list-item">
+                    <li key={index} className="venue-list-item" onClick={()=>navigate(`/confirm/${venue.id}`)} >
                         <h3>{venue.name}</h3>
                         <p>{venue.address}</p>
                         <p>{venue.postcode}</p>

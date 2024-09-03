@@ -105,6 +105,8 @@ app.post('/allinfo',authenticateJWT,async(req,res)=> {
 
 }
   )
+
+app.use('/auth',authenticateJWT)
 app.use('/profile',authenticateJWT)
 app.use('/settings/profile',authenticateJWT,postprofile)
 app.use('/settings/changepassword',authenticateJWT,changePassword)

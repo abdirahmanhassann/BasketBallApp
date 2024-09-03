@@ -10,16 +10,29 @@ import {BrowserRouter as Router ,Route,Routes}from 'react-router-dom'
 import SignUp from './DynamicPages/Signup';
 import LoggedInLandingPage from './DynamicPages/LoggedIn/loggedInLandingPage';
 import { NavProvider } from './reusable/NavContext';
+import ConfirmChoice from './DynamicPages/LoggedIn/subprofile/startgame/confirmchoice';
 
 function App() {
 const [isAuthenticated,setIsAuthenticated]=useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Optionally validate the token with the server
-      setIsAuthenticated(true);
-    }
+    fetch('http://localhost:3000/auth', {
+      method: 'post', // Use the appropriate HTTP method here  
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: localStorage.getItem('token'),appjs:true }), // Include the token in the request body            
+    }).then((res) => {
+      res.json().then((data) => {
+        if (!data.appjs) {
+          setIsAuthenticated(false);
+        } else {
+          console.log('token has been found on auth')
+          setIsAuthenticated(true);
+        }
+    })  
+    })
+    
   }, []);
 
   return (
@@ -30,7 +43,8 @@ const [isAuthenticated,setIsAuthenticated]=useState(false)
    <Route  path='/' element={<HomePage />}exact/>
    <Route  path='/signin' element={<SignIn />}exact/>
    <Route  path='/signup' element={<SignUp />}exact/>
-      <Route  path='/profile' element={isAuthenticated? <LoggedInLandingPage />: <SignIn/>} exact/>
+      <Route path='/profile' element={<LoggedInLandingPage />} exact/>
+      <Route path='/confirm/:id' element={ <ConfirmChoice/>}/>
 </Routes>
 </Router>
 </NavProvider>
