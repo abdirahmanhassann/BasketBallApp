@@ -16,6 +16,7 @@ console.log('token is:',token)
     const verified = jwt.verify(token, process.env.SECRET_KEY);
     console.log('verified: ',verified)
     req.user = verified;
+    
     if(req.body.appjs){
       res.status(200).json({verified:true})
     }

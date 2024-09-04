@@ -1,4 +1,3 @@
-// db.js
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -22,8 +21,6 @@ const createUsersTable = async () => {
             bio TEXT,
             phone VARCHAR(50),
             favourite_position VARCHAR(50)
-
-
         );
     `;
     try {
@@ -34,4 +31,34 @@ const createUsersTable = async () => {
     }
 };
 
-module.exports = { pool, createUsersTable };
+const createGamesTable = async () => {
+    const createTableQuery = `
+        CREATE TABLE IF NOT EXISTS games (
+            id SERIAL PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            description TEXT NOT NULL,
+            tags VARCHAR(255),
+            pitch VARCHAR(255),
+            start_time TIMESTAMP NOT NULL,
+            is_private BOOLEAN DEFAULT FALSE,
+            is_indoor BOOLEAN DEFAULT FALSE,
+            is_training BOOLEAN DEFAULT FALSE,
+            accept_applications BOOLEAN DEFAULT FALSE,
+            team_limit INTEGER DEFAULT 5,
+            gender_options VARCHAR(50) DEFAULT 'coed',
+            payment_option VARCHAR(50) DEFAULT 'online',
+            venue_id INTEGER NOT NULL,
+            owner_id INTEGER NOT NULL REFERENCES users(id),
+            applicants INTEGER[] DEFAULT '{}',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    `;
+    try {
+        await pool.query(createTableQuery);
+        console.log('Games table created or already exists.');
+    } catch (error) {
+        console.error('Error creating games table:', error);
+    }
+};
+
+module.exports = { pool, createUsersTable, createGamesTable };

@@ -3,12 +3,15 @@ import { FaRegUser } from "react-icons/fa";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { NavContext } from '../../../reusable/NavContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 function Leftprofile() {
     const { userInfo,selectedNav, setSelectedNav } = useContext(NavContext);
-
+    const navigate=useNavigate()    
+    
   return (
+
 <div className='profileDiv'>
             <div className='profileDivSub' style={{display:'flex',flexDirection:'row',alignItems:'start',gap:'10px',paddingInline:'10px',textAlignLast:'start'}}>
                 <img src='../../../../StockImgs/Userimg.png' style={{width:'50px',borderRadius:'50%'}}/>
@@ -19,15 +22,15 @@ function Leftprofile() {
                 </div>
 
             <div className='ProfileDivider'>
-            <div className='profileDiveSub' onClick={() => setSelectedNav('profile')}>
+            <div className='profileDiveSub' onClick={() => navigate('/profile')}>
             <FaRegUser />
                 <p>Profile</p>
             </div>
-            <div className='profileDiveSub' onClick={() => setSelectedNav('startgame')}>
+            <div className='profileDiveSub' onClick={() => navigate('/startgame')}>
             <IoMdAddCircleOutline />
                 <p>Start a game</p>
             </div>
-            <div className='profileDiveSub' onClick={() => setSelectedNav('Settings')}>
+            <div className='profileDiveSub' onClick={() => navigate('/Settings')}>
             <IoLocationOutline />
                 <p>Based in London,UK</p>
             </div>

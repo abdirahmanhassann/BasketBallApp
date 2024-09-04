@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import venue from '../../../../reusable/venues.json';
 import { useNavigate } from 'react-router-dom';
+import SignedInHeader from '../../../../reusable/SignedInHeader';
+import Leftprofile from '../leftprofile';
 const StartGame = () => {
     const [venues, setVenues] = useState(venue);
     const [search, setSearch] = useState("");
@@ -36,6 +38,10 @@ const StartGame = () => {
     };
 
     return (
+        <>
+        <SignedInHeader />
+        <div className='LargeDivider'>
+          <Leftprofile />
         <div className="venue-container">
             <h1 className="venue-header">Pick a Venue</h1>
             <input 
@@ -77,6 +83,8 @@ const StartGame = () => {
                 </button>
             </div>
         </div>
+        </div>
+        </>
     );
 };
 

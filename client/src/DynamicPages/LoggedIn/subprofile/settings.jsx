@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import EditProfile from './subsettings/editProfile';
 import Password from './subsettings/password';
 import Email from './subsettings/email';
+import SignedInHeader from '../../../reusable/SignedInHeader';
+import Leftprofile from './leftprofile';
 
 
 const Settings = () => {
@@ -19,6 +21,10 @@ const Settings = () => {
     }
   };
     return (
+      <>
+      <SignedInHeader />
+      <div className='LargeDivider'>
+        <Leftprofile />
       <div className="settings-container">
         <h2>Settings</h2>
         <div className="settings-tabs">
@@ -51,7 +57,9 @@ const Settings = () => {
         <div className="settings-content">
           {renderContent()}
         </div>
+        </div>
       </div>
+      </>
     );
   };
   

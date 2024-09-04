@@ -11,6 +11,9 @@ import SignUp from './DynamicPages/Signup';
 import LoggedInLandingPage from './DynamicPages/LoggedIn/loggedInLandingPage';
 import { NavProvider } from './reusable/NavContext';
 import ConfirmChoice from './DynamicPages/LoggedIn/subprofile/startgame/confirmchoice';
+import StartGame from './DynamicPages/LoggedIn/subprofile/startgame/StartGame';
+import Settings from './DynamicPages/LoggedIn/subprofile/settings';
+import Profile from './DynamicPages/LoggedIn/subprofile/profile';
 
 function App() {
 const [isAuthenticated,setIsAuthenticated]=useState(false)
@@ -43,7 +46,10 @@ const [isAuthenticated,setIsAuthenticated]=useState(false)
    <Route  path='/' element={<HomePage />}exact/>
    <Route  path='/signin' element={<SignIn />}exact/>
    <Route  path='/signup' element={<SignUp />}exact/>
-      <Route path='/profile' element={<LoggedInLandingPage />} exact/>
+      <Route path='/home' element={<LoggedInLandingPage />} exact/>
+      <Route path='/startgame' element={<StartGame />} exact/>
+      <Route path='/profile' element={<Profile />} exact/>
+      <Route path='/settings' element={<Settings />} exact/>
       <Route path='/confirm/:id' element={ <ConfirmChoice/>}/>
 </Routes>
 </Router>

@@ -13,7 +13,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { Sequelize } = require('sequelize');
 const dotenv=require('dotenv')
 const bcrypt=require('bcryptjs');
-const { pool,createUsersTable } = require('./Db/db.js');
+const { pool,createUsersTable,createGamesTable } = require('./Db/db.js');
 const getUsers = require('./Db/getDb.js');
 const checkUserExists = require('./Db/checkUserExists.js');
 const logincheck = require('./Db/logincheck.js');
@@ -21,6 +21,7 @@ const getHome = require('./Db/getHome.js');
 const postprofile = require('./middleware/settings/postProfile.js');
 const changePassword = require('./middleware/settings/changePassword.js');
 const changeEmail = require('./middleware/settings/changeemail.js');
+const createGame = require('./middleware/creategame.js');
 dotenv.config()
 const users=[]
 // Middleware to parse JSON bodies
@@ -31,6 +32,7 @@ app.use(cors({
   origin: true, // Replace with your React app's URL
 }));
 createUsersTable();
+createGamesTable();
 
 
 app.post('/register', async (req, res) => {
@@ -107,6 +109,7 @@ app.post('/allinfo',authenticateJWT,async(req,res)=> {
   )
 
 app.use('/auth',authenticateJWT)
+app.use('/creategame',authenticateJWT,createGame)
 app.use('/profile',authenticateJWT)
 app.use('/settings/profile',authenticateJWT,postprofile)
 app.use('/settings/changepassword',authenticateJWT,changePassword)
