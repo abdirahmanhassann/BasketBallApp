@@ -542,10 +542,6 @@ small {
   color: #fff;
 }
 
-.settings-tabs button:hover {
-  background-color: #d32f2f;
-}
-
 .settings-content {
   padding: 20px;
   background-color: #fafafa;
@@ -691,4 +687,111 @@ small {
 
 .startgame-submit:hover {
   background-color: #0056b3;
+}
+/* GamesList.css */
+.games-list {
+  width: 100%;
+  max-width: 800px;
+  margin-inline: auto;
+  padding: 20px;
+}
+
+.game-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #d60000; /* Red border similar to the icons in the screenshot */
+}
+
+.game-time {
+  flex-basis: 10%;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.game-details {
+  flex-basis: 65%;
+}
+
+.game-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.game-info {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.game-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.game-tag {
+  background-color: #ececec;
+  color: #333;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.game-price-players {
+  flex-basis: 25%;
+  text-align: right;
+}
+
+.game-price {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.game-players {
+  font-size: 14px;
+  color: #666;
+  background: lightgray;
+  width: fit-content;
+  padding-inline: 12px;
+  padding-block: 2px;
+  border-radius: 5px;
+  margin-left: auto;
+}
+/* Add this to your CSS file */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 5px;
+  border: none;
+  background-color: #d60000;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 16px;
+  margin: 0 10px;
 }

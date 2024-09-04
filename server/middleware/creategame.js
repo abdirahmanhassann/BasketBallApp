@@ -2,10 +2,36 @@ const { pool } = require('../Db/db');
 
 // Middleware to create a game
 const createGame = async (req, res, next) => {
+    const {
+        title,
+        description,
+        tags,
+        pitch,
+        date,
+        time,
+        private,
+        indoor,
+        training,
+        applications,
+        team_limit,
+        gender,
+        payment,
+        amount
+    } = req.body.formData;
+    const venue_id=req.body.venue.id
     const email = req.user.email;
     console.log('Create game email is:', email);
+    const now = new Date();
+    now.setDate(now.getDate() + 1);
+
+    const start_time = new Date(`${date}T${time}`);
 
     try {
+        console.log('time:',start_time,now)
+        if (start_time<now)  {
+            return res.status(404).json({ message: 'Please choose a date that is at least one day in advance' }); ; // Return true if start_time is in the future
+        };
+
         // Query to get the owner_id based on email
         const ownerQuery = `
             SELECT id FROM users WHERE email = $1
@@ -30,26 +56,10 @@ const createGame = async (req, res, next) => {
         const checkGameResult = await pool.query(checkGameQuery, [owner_id, today]);
 
         console.log('checking',owner_id,today,checkGameResult.rows)
-        if (checkGameResult.rows.length > 0) {
-            return res.status(400).json({ message: 'You have already created a game today. You cannot create more than one game per day.' });
-        }
+        // if (checkGameResult.rows.length > 0) {
+        //     return res.status(400).json({ message: 'You have already created a game today. You cannot create more than one game per day.' });
+        // }
 
-        const {
-            title,
-            description,
-            tags,
-            pitch,
-            date,
-            time,
-            is_private,
-            is_indoor,
-            is_training,
-            accept_applications,
-            team_limit,
-            gender_options,
-            payment_option,
-        } = req.body.formData;
-        const venue_id=req.body.venue.id
         // Validate required fields
         console.log('gameValues:',title,description,date,time,venue_id)
         if (!title || !description || !date || !time || venue_id<0 ) {
@@ -57,24 +67,23 @@ const createGame = async (req, res, next) => {
         }
 
         // Combine date and time into a single timestamp
-        const start_time = new Date(`${date}T${time}`);
 
         const gameQuery = `
             INSERT INTO games (
                 title, description, tags, pitch, start_time, is_private, 
                 is_indoor, is_training, accept_applications, team_limit, 
-                gender_options, payment_option, venue_id, owner_id
+                gender_options, payment_option, venue_id, owner_id,amount
             ) VALUES (
                 $1, $2, $3, $4, $5, $6, 
                 $7, $8, $9, $10, 
-                $11, $12, $13, $14
+                $11, $12, $13, $14,$        15
             ) RETURNING id
         `;
 
         const gameValues = [
-            title, description, tags, pitch, start_time, is_private,
-            is_indoor, is_training, accept_applications, team_limit,
-            gender_options, payment_option, venue_id, owner_id
+            title, description, tags, pitch, start_time, private,
+            indoor, training, applications, team_limit,
+            gender, payment, venue_id, owner_id,amount
         ];
 
         const result = await pool.query(gameQuery, gameValues);
@@ -92,3 +101,4 @@ const createGame = async (req, res, next) => {
 };
 
 module.exports = createGame;
+    

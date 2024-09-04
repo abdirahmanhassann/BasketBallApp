@@ -3,11 +3,13 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import v from '../../../../reusable/venues.json';
 import SignedInHeader from '../../../../reusable/SignedInHeader';
 import Leftprofile from '../leftprofile';
+
 const ConfirmChoice = () => {
     const [id, setId] = useState();
     const [venue, setVenue] = useState();
-    const token=localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     console.log(token);
+    
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -21,7 +23,8 @@ const ConfirmChoice = () => {
         applications: false,
         team_limit: '5',
         gender: 'coed',
-        payment: 'online'
+        payment: 'online',
+        amount: '', // Add an amount field to the formData state
     });
 
     useEffect(() => {
@@ -35,6 +38,7 @@ const ConfirmChoice = () => {
         console.log(id)
         setVenue(v[id]);
     }, [id]);
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prevState => ({
@@ -56,7 +60,7 @@ const ConfirmChoice = () => {
         const dataToSend = {
             ...formData,
             venue: v[id],
-            token:token ,
+            token: token,
         };
 
         try {
@@ -65,7 +69,7 @@ const ConfirmChoice = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({formData:formData,token:token,venue:venue})
+                body: JSON.stringify({formData:formData, token: token, venue: venue})
             });
 
             if (response.ok) {
@@ -256,6 +260,22 @@ const ConfirmChoice = () => {
                                         /> Free
                                     </label>
                                 </div>
+
+                                {/* Conditionally render amount input based on selected payment option */}
+                                {(formData.payment === 'cash' || formData.payment === 'online') && (
+                                    <div className="startgame-form-group">
+                                        <label>Amount per person</label>
+                                        <input
+                                            type="number"
+                                            name="amount"
+                                            value={formData.amount}
+                                            onChange={handleChange}
+                                            placeholder="Enter amount"
+                                            required
+                                        />
+                                    </div>
+                                )}
+
                                 <button type="submit" className="startgame-submit">Create Game</button>
                             </form>
                         </>

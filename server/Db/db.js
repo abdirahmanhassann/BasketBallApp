@@ -50,7 +50,8 @@ const createGamesTable = async () => {
             venue_id INTEGER NOT NULL,
             owner_id INTEGER NOT NULL REFERENCES users(id),
             applicants INTEGER[] DEFAULT '{}',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            amount INTEGER DEFAULT 0
         );
     `;
     try {
