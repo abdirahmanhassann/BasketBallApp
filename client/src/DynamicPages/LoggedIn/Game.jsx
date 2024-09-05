@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import SignedInHeader from '../../reusable/SignedInHeader';
 import Leftprofile from './subprofile/leftprofile';
 import venue from '../../reusable/venues';
+import { useNavigate } from 'react-router-dom';
 
 const Games = () => {
     const [games, setGames] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const token = localStorage.getItem('token');
-
+    const navigate=useNavigate()
     useEffect(() => {
         function fetchGames(page) {
             fetch(`http://localhost:3000/games?page=${page}`, {
@@ -80,7 +81,7 @@ const Games = () => {
                         <>
                             <h3>Today</h3>
                             {today.map((game, index) => (
-                                <div key={index} className="game-item">
+                                <div key={index} className="game-item"  onClick={()=>navigate(`/games/${game.id}`)}>
                                     <div className="game-time">
                                         {new Date(game.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </div>
@@ -109,7 +110,7 @@ const Games = () => {
                         <>
                             <h3>Tomorrow</h3>
                             {tomorrow.map((game, index) => (
-                                <div key={index} className="game-item">
+                                <div key={index} className="game-item"  onClick={()=>navigate(`/games/${game.id}`)}>
                                     <div className="game-time">
                                         {new Date(game.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </div>
@@ -150,8 +151,7 @@ const Games = () => {
                     {index === 0 || currentGameDate !== previousGameDate ? (
                       <h3>{currentGameDate}</h3>
                     ) : null}
-
-                                <div key={index} className="game-item">
+                                <div key={index} className="game-item"  onClick={()=>navigate(`/games/${game.id}`)}>
                                     <div className="game-time">
                                         {new Date(game.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </div>

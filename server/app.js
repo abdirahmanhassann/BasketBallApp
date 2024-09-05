@@ -23,6 +23,7 @@ const changePassword = require('./middleware/settings/changePassword.js');
 const changeEmail = require('./middleware/settings/changeemail.js');
 const createGame = require('./middleware/creategame.js');
 const games = require('./middleware/games.js');
+const playgame = require('./middleware/playgame.js');
 dotenv.config()
 const users=[]
 // Middleware to parse JSON bodies
@@ -112,6 +113,7 @@ app.post('/allinfo',authenticateJWT,async(req,res)=> {
 app.use('/auth',authenticateJWT)
 app.use('/creategame',authenticateJWT,createGame)
 app.use('/games',authenticateJWT,games)
+app.use('/game/:id',authenticateJWT,playgame)
 app.use('/profile',authenticateJWT)
 app.use('/settings/profile',authenticateJWT,postprofile)
 app.use('/settings/changepassword',authenticateJWT,changePassword)

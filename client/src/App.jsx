@@ -15,6 +15,7 @@ import StartGame from './DynamicPages/LoggedIn/subprofile/startgame/StartGame';
 import Settings from './DynamicPages/LoggedIn/subprofile/settings';
 import Profile from './DynamicPages/LoggedIn/subprofile/profile';
 import Games from './DynamicPages/LoggedIn/Game';
+import Playgame from './DynamicPages/LoggedIn/playgame';
 
 function App() {
 const [isAuthenticated,setIsAuthenticated]=useState(false)
@@ -52,6 +53,7 @@ const [isAuthenticated,setIsAuthenticated]=useState(false)
       <Route path='/profile' element={<Profile />} exact/>
       <Route path='/settings' element={<Settings />} exact/>
       <Route path='/games' element={<Games/>} exact/>
+      <Route path='/games/:id' element={<Playgame/>} exact/>
       <Route path='/confirm/:id' element={ <ConfirmChoice/>}/>
 </Routes>
 </Router>
