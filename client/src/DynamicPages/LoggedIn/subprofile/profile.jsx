@@ -18,7 +18,7 @@ function Profile() {
     <p>reliabilty 100%</p>
     </div>
     <div>
-    <h3>{userInfo&& userInfo.user.firstname} {userInfo&& userInfo.user.lastname}</h3>
+    <p3>Welcome back {userInfo&& userInfo.user.firstname} {userInfo&& userInfo.user.lastname}!</p3>
     <p>{userInfo && userInfo.user.username}</p>
     </div>
 </div>

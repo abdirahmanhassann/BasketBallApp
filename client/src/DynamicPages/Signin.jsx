@@ -30,7 +30,7 @@ console.log(email.value,password.value)
       //    userInfo=data.userinfo
     //      localStorage.setItem('user', JSON.stringify(data.userInfo));
           alert('Login successful!');
-          navigate('/profile')
+          navigate('/home')
         } else {
           alert('Email or Password is incorrect')
           setError(data.message || 'An error occurred');

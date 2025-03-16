@@ -45,7 +45,7 @@ const [isAuthenticated,setIsAuthenticated]=useState(false)
 <Router>
    <Routes>
 
-   <Route  path='/' element={<HomePage />}exact/>
+   <Route  path='/' element={ !isAuthenticated ? <LoggedInLandingPage /> : <HomePage />}exact/>
    <Route  path='/signin' element={<SignIn />}exact/>
    <Route  path='/signup' element={<SignUp />}exact/>
       <Route path='/home' element={<LoggedInLandingPage />} exact/>

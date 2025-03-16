@@ -24,6 +24,7 @@ const changeEmail = require('./middleware/settings/changeemail.js');
 const createGame = require('./middleware/creategame.js');
 const games = require('./middleware/games.js');
 const playgame = require('./middleware/playgame.js');
+const getUserUpcomingMatches = require('./middleware/getUserUpcomingMatches.js');
 dotenv.config()
 const users=[]
 // Middleware to parse JSON bodies
@@ -119,7 +120,8 @@ app.use('/settings/profile',authenticateJWT,postprofile)
 app.use('/settings/changepassword',authenticateJWT,changePassword)
 app.use('/settings/changeemail',authenticateJWT,changeEmail)
 app.use('/req',reqauth);
-app.use('/home',getHome)
+app.use('/home',getHome);
+app.use('/getUserUpcomingMatches',getUserUpcomingMatches);
 app.use('/oauth',oauth);
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import v from '../../../../reusable/venues.json';
 import SignedInHeader from '../../../../reusable/SignedInHeader';
 import Leftprofile from '../leftprofile';
@@ -7,8 +7,9 @@ import Leftprofile from '../leftprofile';
 const ConfirmChoice = () => {
     const [id, setId] = useState();
     const [venue, setVenue] = useState();
+    const [teams, setTeams] = useState([{ name: "Team 1", players: 5 }, { name: "Team 2", players: 5 }]); // Default teams
     const token = localStorage.getItem('token');
-    console.log(token);
+    const navigate = useNavigate(); // For redirection after form submission
     
     const [formData, setFormData] = useState({
         title: '',
@@ -24,19 +25,15 @@ const ConfirmChoice = () => {
         team_limit: '5',
         gender: 'coed',
         payment: 'online',
-        amount: '', // Add an amount field to the formData state
+        amount: '',
     });
 
     useEffect(() => {
-        const currentUrl = window.location.href; // Get the full URL
-        console.log("Current URL:", currentUrl);
-
-        // Extract the last segment after '/' which is the id
+        const currentUrl = window.location.href; 
         const urlParts = currentUrl.split('/');
         const extractedId = urlParts[urlParts.length - 1];
         setId(extractedId);
-        console.log(id)
-        setVenue(v[id]);
+        setVenue(v[extractedId]);
     }, [id]);
 
     const handleChange = (e) => {
@@ -45,6 +42,30 @@ const ConfirmChoice = () => {
             ...prevState,
             [name]: type === 'checkbox' ? checked : value
         }));
+    };
+
+    // Handle the number of teams input
+    const handleNumberOfTeamsChange = (e) => {
+        const numTeams = parseInt(e.target.value);
+        const newTeams = Array.from({ length: numTeams }, (_, i) => ({
+            name: `Team ${i + 1}`,
+            players: 5, // Default number of players
+        }));
+        setTeams(newTeams);
+    };
+
+    // Handle players per team input
+    const handlePlayersPerTeamChange = (index, value) => {
+        const newTeams = [...teams];
+        newTeams[index].players = value;
+        setTeams(newTeams);
+    };
+
+    // Handle team name changes
+    const handleTeamNameChange = (index, value) => {
+        const newTeams = [...teams];
+        newTeams[index].name = value;
+        setTeams(newTeams);
     };
 
     const handleSubmit = async (e) => {
@@ -61,6 +82,7 @@ const ConfirmChoice = () => {
             ...formData,
             venue: v[id],
             token: token,
+            teams: teams, // Include teams data in the submission
         };
 
         try {
@@ -69,12 +91,12 @@ const ConfirmChoice = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({formData:formData, token: token, venue: venue})
+                body: JSON.stringify({ formData: formData, token: token, venue: venue, teams: teams })
             });
 
             if (response.ok) {
                 alert('Game created successfully!');
-                navigate('/profile/games');  // Redirect to games list or any other page
+                navigate('/games');
             } else {
                 const errorData = await response.json();
                 alert(`Failed to create game: ${errorData.message}`);
@@ -95,6 +117,7 @@ const ConfirmChoice = () => {
                         <>
                             <h1>Start a game ({venue.name})</h1>
                             <form className="startgame-form" onSubmit={handleSubmit}>
+                                {/* Existing form fields */}
                                 <div className="startgame-form-group">
                                     <label>Title</label>
                                     <input
@@ -114,23 +137,41 @@ const ConfirmChoice = () => {
                                         required
                                     />
                                 </div>
+                                
+                                {/* Number of Teams */}
                                 <div className="startgame-form-group">
-                                    <label>Tags</label>
+                                    <label>Number of Teams</label>
                                     <input
-                                        type="text"
-                                        name="tags"
-                                        value={formData.tags}
-                                        onChange={handleChange}
-                                        placeholder="Type # and your tag"
+                                        type="number"
+                                        value={teams.length}
+                                        onChange={handleNumberOfTeamsChange}
+                                        min={2}
+                                        max={10}
+                                        required
                                     />
                                 </div>
-                                <div className="startgame-form-group">
-                                    <label>Pitch</label>
-                                    <select name="pitch" value={formData.pitch} onChange={handleChange}>
-                                        <option value="">Select pitch</option>
-                                        {/* Add pitch options here */}
-                                    </select>
-                                </div>
+
+                                {/* Team Names and Players per Team */}
+                                {teams.map((team, index) => (
+                                    <div key={index} className="startgame-form-group">
+                                        <label>Team {index + 1} Name</label>
+                                        <input
+                                            type="text"
+                                            value={team.name}
+                                            onChange={(e) => handleTeamNameChange(index, e.target.value)}
+                                        />
+                                        <label>Players per Team</label>
+                                        <input
+                                            type="number"
+                                            value={team.players}
+                                            onChange={(e) => handlePlayersPerTeamChange(index, e.target.value)}
+                                            min={1}
+                                            max={20}
+                                        />
+                                    </div>
+                                ))}
+
+                                {/* Continue with the existing form (date, time, etc.) */}
                                 <div className="startgame-form-group">
                                     <label>Start at</label>
                                     <input
@@ -147,118 +188,6 @@ const ConfirmChoice = () => {
                                         onChange={handleChange}
                                         required
                                     />
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            name="private"
-                                            checked={formData.private}
-                                            onChange={handleChange}
-                                        /> Private (Only invited players can join)
-                                    </label>
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            name="indoor"
-                                            checked={formData.indoor}
-                                            onChange={handleChange}
-                                        /> Indoor
-                                    </label>
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            name="training"
-                                            checked={formData.training}
-                                            onChange={handleChange}
-                                        /> Training session
-                                    </label>
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            name="applications"
-                                            checked={formData.applications}
-                                            onChange={handleChange}
-                                        /> Accept facilitator/host applications
-                                    </label>
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>Team players limit</label>
-                                    <select
-                                        name="team_limit"
-                                        value={formData.team_limit}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="5">5 a side</option>
-                                        <option value="7">7 a side</option>
-                                        <option value="11">11 a side</option>
-                                    </select>
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>Gender options</label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="gender"
-                                            value="coed"
-                                            checked={formData.gender === 'coed'}
-                                            onChange={handleChange}
-                                        /> Co-ed
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="gender"
-                                            value="women"
-                                            checked={formData.gender === 'women'}
-                                            onChange={handleChange}
-                                        /> Women
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="gender"
-                                            value="men"
-                                            checked={formData.gender === 'men'}
-                                            onChange={handleChange}
-                                        /> Men
-                                    </label>
-                                </div>
-                                <div className="startgame-form-group">
-                                    <label>Payment</label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            value="online"
-                                            checked={formData.payment === 'online'}
-                                            onChange={handleChange}
-                                        /> Online
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            value="cash"
-                                            checked={formData.payment === 'cash'}
-                                            onChange={handleChange}
-                                        /> Cash
-                                    </label>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            value="free"
-                                            checked={formData.payment === 'free'}
-                                            onChange={handleChange}
-                                        /> Free
-                                    </label>
                                 </div>
 
                                 {/* Conditionally render amount input based on selected payment option */}

@@ -32,6 +32,7 @@ function Leftprofile() {
   return (
 <>
 <div className='profileDiv'>
+  
             <div className='profileDivSub' style={{display:'flex',flexDirection:'row',alignItems:'start',gap:'10px',paddingInline:'10px',textAlignLast:'start'}}>
                 <img src='../../../../StockImgs/Userimg.png' style={{width:'50px',borderRadius:'50%'}}/>
             <div className='profileDivSub' style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'start'}}>
