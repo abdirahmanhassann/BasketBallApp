@@ -22,7 +22,9 @@ const Playgame = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setGameDetails(data); // Assuming the API returns a game object
+                setGameDetails(data);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+
             })
             .catch(error => {
                 console.error('Error fetching game details:', error);

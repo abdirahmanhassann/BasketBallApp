@@ -73,26 +73,51 @@ await getUsers();
 // User login route
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-console.log(req.body.email,req.body.password)
+  console.log(req.body.email, req.body.password);
+
   // Check if user exists
-  const user  = await logincheck(email);
+  const user = await logincheck(email);
   if (!user) {
     console.log('no user');
     return res.status(400).json({ message: 'Invalid email or password' });
   }
-  
-  console.log('passwords: ', password, user.password)
+
+  console.log('passwords: ', password, user.password);
   const validPassword = await bcrypt.compare(password, user.password);
-  
+
   if (!validPassword) {
-    console.log('no password')
+    console.log('no password');
     return res.status(400).json({ message: 'Invalid email or password' });
   }
-  // Create and assign a token
-  const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '7d' });
-  user.password= null;
-  res.json({ token:token, userinfo:user });
+
+  // Generate Access Token (short-lived)
+  const accessToken = jwt.sign(
+    { email: user.email },
+    process.env.SECRET_KEY,
+    { expiresIn: '30d' } // Access token expires in 15 minutes
+  );
+
+  // Generate Refresh Token (long-lived)
+  const refreshToken = jwt.sign(
+    { email: user.email },
+    process.env.REFRESH_SECRET_KEY,
+    { expiresIn: '100d' } // Refresh token expires in 30 days
+  );
+
+  // Store the Refresh Token Securely (httpOnly cookie)
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true, // Prevents JavaScript access
+    secure: true,   // Ensures it is sent over HTTPS
+    sameSite: 'Strict', // CSRF protection
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+  });
+
+  user.password = null;
+
+  // Send response with access token (but NOT the refresh token)
+  res.json({ token:accessToken, userinfo: user });
 });
+
 
 app.post('/allinfo',authenticateJWT,async(req,res)=> { 
   const {email}=req.body;
@@ -111,7 +136,7 @@ app.post('/allinfo',authenticateJWT,async(req,res)=> {
 }
   )
 
-app.use('/auth',authenticateJWT)
+app.use('/',authenticateJWT)
 app.use('/creategame',authenticateJWT,createGame)
 app.use('/games',authenticateJWT,games)
 app.use('/game/:id',authenticateJWT,playgame)

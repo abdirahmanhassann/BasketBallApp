@@ -1,30 +1,53 @@
-const express = require('express')
-const jwt=require('jsonwebtoken')
-const bcrypt=require('bcryptjs');
-const dotenv=require('dotenv')
-dotenv.config(); 
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const authenticateJWT = (req, res, next) => {
-  const token = req.body.token;
-console.log('token is:',token)
+  let token = req.headers['authorization'];
+  if (token && token.startsWith('Bearer ')) {
+    token = token.split(' ')[1];
+  } else {
+    console.log('token:', req.body);
+    token = req.body.token ||req.body.email;
+  }
+
   if (!token) {
+    console.log('No token provided',token);
     return res.status(401).json({ message: 'Access Denied. No token provided.' });
   }
 
-  
-  try {
-    const verified = jwt.verify(token, process.env.SECRET_KEY);
-    console.log('verified: ',verified)
-    req.user = verified;
-    
-    if(req.body.appjs){
-      res.status(200).json({verified:true})
+  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    if (err) {
+      // If the error is due to token expiration, check the refresh token
+      if (err.name === 'TokenExpiredError') {
+        const refreshToken = req.body.refreshToken;  // Make sure frontend sends this
+        if (!refreshToken) {
+          return res.status(401).json({ message: 'Refresh token missing' });
+        }
+
+        // Verify refresh token
+        jwt.verify(refreshToken, process.env.REFRESH_SECRET_KEY, (refreshErr, refreshDecoded) => {
+          if (refreshErr) {
+            return res.status(403).json({ message: 'Invalid or expired refresh token' });
+          }
+
+          // Generate new access token
+          const newAccessToken = jwt.sign(
+            { email: refreshDecoded.email },
+            process.env.SECRET_KEY,
+            { expiresIn: '15m' }
+          );
+
+          res.json({ newAccessToken });
+        });
+      } else {
+        return res.status(403).json({ message: 'Invalid token' });
+      }
+    } else {
+      req.user = decoded;
+      next();
     }
-    next();
-  } catch (error) {
-    console.log('error in the token')
-    res.status(400).json({ message: 'Invalid Token' });
-  }
+  });
 };
 
-  module.exports=authenticateJWT;
+module.exports = authenticateJWT;

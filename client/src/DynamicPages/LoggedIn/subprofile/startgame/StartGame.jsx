@@ -36,6 +36,8 @@ const StartGame = () => {
     const handlePreviousPage = () => {
         setCurrentPage((prev) => Math.max(prev - 1, 1));
     };
+    useEffect(() => {
+    }, [currentPage]);
 
     return (
         <>

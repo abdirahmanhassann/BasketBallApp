@@ -24,6 +24,7 @@ const Games = () => {
                     setGames(response.games);
                     setTotalPages(response.totalPages);
                     setCurrentPage(response.currentPage);
+                    
                 })
                 .catch(error => {
                     console.error('Error fetching games:', error);

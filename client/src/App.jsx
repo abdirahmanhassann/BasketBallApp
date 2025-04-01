@@ -20,32 +20,52 @@ import Playgame from './DynamicPages/LoggedIn/playgame';
 function App() {
 const [isAuthenticated,setIsAuthenticated]=useState(false)
 
-  useEffect(() => {
-    fetch('http://localhost:3000/auth', {
-      method: 'post', // Use the appropriate HTTP method here  
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: localStorage.getItem('token'),appjs:true }), // Include the token in the request body            
-    }).then((res) => {
-      res.json().then((data) => {
-        if (!data.appjs) {
-          setIsAuthenticated(false);
-        } else {
-          console.log('token has been found on auth')
-          setIsAuthenticated(true);
-        }
-    })  
+useEffect(() => {
+  fetch('http://localhost:3000/', {
+    method: 'post', // Use the appropriate HTTP method here  
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token: localStorage.getItem('token'), refreshToken: localStorage.getItem('refreshToken'), appjs: true }), // Include the token and refresh token in the request body            
+  }).then((res) => {
+    res.json().then((data) => {
+      if (!data.appjs) {
+        console.log('token hasnt been found on auth')
+        setIsAuthenticated(false);
+      } else {
+        console.log('token has been found on auth')
+        setIsAuthenticated(true);
+      }
     })
-    
-  }, []);
+  }).catch((error) => {
+    console.error('there is an error with authentication',error);
+    // If the token is expired, refresh it and retry the request
+    if (error.response.status === 401 && error.response.data.message === 'Token expired. Please log in again.') {
+      fetch('http://localhost:3000/refresh-token', {
+        method: 'post', // Use the appropriate HTTP method here  
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refreshToken: localStorage.getItem('refreshToken') }), // Include the refresh token in the request body            
+      }).then((res) => {
+        res.json().then((data) => {
+          localStorage.setItem('token', data.token);
+          setIsAuthenticated(true);
+        })
+      }).catch((error) => {
+        console.error(error);
+        Navigate('/signin')
+      });
+    }
+  })
+}, []);
 
   return (
    <NavProvider>
 <Router>
    <Routes>
 
-   <Route  path='/' element={ !isAuthenticated ? <LoggedInLandingPage /> : <HomePage />}exact/>
+   <Route  path='/' element={ isAuthenticated ? <HomePage/> : <LoggedInLandingPage /> }exact/>
    <Route  path='/signin' element={<SignIn />}exact/>
    <Route  path='/signup' element={<SignUp />}exact/>
       <Route path='/home' element={<LoggedInLandingPage />} exact/>

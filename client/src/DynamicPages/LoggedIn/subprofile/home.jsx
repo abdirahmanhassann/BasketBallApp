@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NavContext } from '../../../reusable/NavContext';
-
+import venue from '../../../reusable/venues.json';
+import { useNavigate } from 'react-router-dom';
 function Home() {
     const { userInfo , setUserInfo } = useContext(NavContext);
 const [upcomingMatches, setUpcomingMatches] = useState([]);
  const email=localStorage.getItem('token')
-
+ const navigate=useNavigate()
   useEffect(()=>{
 
     function fetchUpcomingMatches() {
@@ -34,6 +35,10 @@ const [upcomingMatches, setUpcomingMatches] = useState([]);
     })
     .then(res=>res.json())
     .then(data=>{
+      if(data.error){
+        alert(data.error)
+        navigate('/login')
+      }
 
     console.log(data)
     setUserInfo(data)
@@ -47,19 +52,39 @@ const [upcomingMatches, setUpcomingMatches] = useState([]);
   return (
     <div>
       {userInfo && userInfo.user ? (
-        <>
-          <p>welcome back {userInfo.user.firstname} {userInfo.user.lastname}.</p>
-          <div style={{ textAlign: 'center' }}>
-            <h3>
-              Follow players and organisers to keep up to date with upcoming matches
-            </h3>
-            {upcomingMatches && upcomingMatches.length > 0 ? upcomingMatches.map( (match) => <div> {match.id} </div>) : (
-              <button className='redButton'>
-                Play basketball matches
-              </button>
-            )}
-          </div>
-        </>
+        <div className="games">
+  <h2>My Matches</h2>
+  <h4>Follow players and organisers to keep up to date with upcoming matches</h4>
+  <div className="games-list">
+    { upcomingMatches && upcomingMatches.map((game, index) => (
+      <>
+      <p1>{ new Date(game.start_time).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p1>
+      
+      <div key={index} className="game-item"  onClick={()=>navigate(`/games/${game.id}`)}>
+                                    <div className="game-time">
+                                        {new Date(game.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </div>
+                                    <div className="game-details">
+                                        <div className="game-title">{venue[game.venue_id]?.name}</div>
+                                        <div className="game-info">{game.title}</div>
+                                        <div className="game-tags">
+                                            {game.tags.split(',').map((tag, idx) => (
+                                                <div key={idx} className="game-tag">#{tag}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="game-price-players">
+                                        <div className="game-price" style={{fontWeight:'bold',fontSize:'13px',color:'#4e4e4e'}}>
+                                            £{Number.isInteger(game.amount) ? `${game.amount}.00` : game.amount}</div>
+                                        <div className="game-players" style={{ background: 'lightgray' }}>
+                                            {game.applicants ? game.applicants.length : 0}/{game.team_limit}
+                                        </div>
+                                    </div>
+                                </div>
+                                </>
+                            ))}
+  </div>
+</div>
       ) : null}
     </div>
   )

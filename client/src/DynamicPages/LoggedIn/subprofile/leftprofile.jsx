@@ -23,6 +23,10 @@ function Leftprofile() {
     .then(data=>{
 
     console.log(data)
+    if(data.error){
+      alert(data.error)
+      navigate('/login')
+    }
     setUserInfo(data)
     })
     .catch(err=>console.log(err))

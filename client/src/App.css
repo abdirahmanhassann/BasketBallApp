@@ -859,3 +859,8 @@ small {
 .game-strong{
   color:#363636;
 }
+
+.teams-container {
+  display: flex;
+  justify-content: space-between;
+}

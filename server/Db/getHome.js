@@ -29,7 +29,6 @@ router.post('/', async function (req, res, next) {
         console.log('error in the token')
         res.status(400).json({ message: 'Invalid Token' });
       }
-
 });
 
 module.exports=router;

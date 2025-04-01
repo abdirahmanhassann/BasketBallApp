@@ -34,6 +34,7 @@ const ConfirmChoice = () => {
         const extractedId = urlParts[urlParts.length - 1];
         setId(extractedId);
         setVenue(v[extractedId]);
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }, [id]);
 
     const handleChange = (e) => {
