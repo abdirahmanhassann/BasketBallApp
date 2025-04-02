@@ -7,8 +7,8 @@ const authenticateJWT = (req, res, next) => {
   if (token && token.startsWith('Bearer ')) {
     token = token.split(' ')[1];
   } else {
-    console.log('token:', req.body);
-    token = req.body.token ||req.body.email;
+    console.log('token:', req.body.token);
+    token = req.body.token ;
   }
 
   if (!token) {
@@ -45,6 +45,7 @@ const authenticateJWT = (req, res, next) => {
       }
     } else {
       req.user = decoded;
+      console.log('decoded:', decoded);
       next();
     }
   });

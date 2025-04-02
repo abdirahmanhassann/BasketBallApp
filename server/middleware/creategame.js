@@ -17,12 +17,18 @@ const createGame = async (req, res, next) => {
         gender,
         payment,
         amount,
-    }= req.body.formData;
+    } = req.body.formData;
 
-    const teams = req.body.teams; // Teams array passed from frontend
+    let teams = req.body.teams; // Teams array passed from frontend
     const venue_id = req.body.venue.id;
     const email = req.user.email;
     console.log('Create game email is:', email);
+
+    // Ensure each team has a players array
+    teams = teams.map(team => ({
+        ...team,
+        players: Array.isArray(team.players) ? team.players : []  // Ensure players is always an array
+    }));
 
     const now = new Date();
     now.setDate(now.getDate() + 1);
@@ -33,6 +39,7 @@ const createGame = async (req, res, next) => {
         if (start_time < now) {
             return res.status(404).json({ message: 'Please choose a date that is at least one day in advance' });
         }
+
         // Query to get the owner_id based on email
         const ownerQuery = `
             SELECT id FROM users WHERE email = $1
@@ -96,7 +103,7 @@ const createGame = async (req, res, next) => {
         req.gameId = gameId;
 
         // Proceed to the next middleware or route handler
-        res.status(200).send('game successfully created!')
+        res.status(200).send('game successfully created!');
     } catch (error) {
         console.error('Error creating game:', error);
         return res.status(500).json({ message: 'Internal server error' });

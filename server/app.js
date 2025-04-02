@@ -24,6 +24,7 @@ const changeEmail = require('./middleware/settings/changeemail.js');
 const createGame = require('./middleware/creategame.js');
 const games = require('./middleware/games.js');
 const playgame = require('./middleware/playgame.js');
+const jointeam= require('./middleware/jointeam.js');
 const getUserUpcomingMatches = require('./middleware/getUserUpcomingMatches.js');
 dotenv.config()
 const users=[]
@@ -101,7 +102,7 @@ app.post('/login', async (req, res) => {
   const refreshToken = jwt.sign(
     { email: user.email },
     process.env.REFRESH_SECRET_KEY,
-    { expiresIn: '100d' } // Refresh token expires in 30 days
+    { expiresIn: '1m' } // Refresh token expires in 30 days
   );
 
   // Store the Refresh Token Securely (httpOnly cookie)
@@ -136,8 +137,11 @@ app.post('/allinfo',authenticateJWT,async(req,res)=> {
 }
   )
 
-app.use('/',authenticateJWT)
+app.use('/auth',authenticateJWT, (req, res) => {
+  res.json({ authenticated: true, user: req.user });
+});
 app.use('/creategame',authenticateJWT,createGame)
+app.use('/jointeam',authenticateJWT,jointeam)
 app.use('/games',authenticateJWT,games)
 app.use('/game/:id',authenticateJWT,playgame)
 app.use('/profile',authenticateJWT)
