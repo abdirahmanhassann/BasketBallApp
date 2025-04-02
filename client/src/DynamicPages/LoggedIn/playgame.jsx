@@ -49,24 +49,40 @@ const Playgame = () => {
     return (
         <>
             <SignedInHeader />
-            <div className="LargeDivider">
+            <div className="large-divider">
                 <Leftprofile />
                 {!gameDetails ? <p>Loading game details...</p> : (
                     <div className="game-details-container">
                         <h2>{gameDetails.title} | {new Date(gameDetails.start_time).toLocaleTimeString()}</h2>
                         <div className="teams-info">
-                            <h3>Teams</h3>
                             {gameDetails.teams.map((team, index) => (
                                 <div key={index} className="team">
-                                    <h4>{team.name} ({team.players.length}/{team.limit})</h4>
-                                    <button onClick={() => handleJoinTeam(index)} disabled={team.players.length >= team.limit}>
-                                        {team.players.length < team.limit ? 'Join Team' : 'Team Full'}
-                                    </button>
-                                    <ul>
+                                    <h4>{team.name} ({team.players.length}/{gameDetails.team_limit})</h4>
+                                    <ul className="player-list">
                                         {team.players.map((player, playerIndex) => (
-                                            <li key={playerIndex}>{player.name}</li>
+                                            <div className='infodiv' key={playerIndex}>
+                                                <img src='../../../../StockImgs/Userimg.png' className='profilepic' alt="Player" />
+                                                <div className="player-info">
+                                                    {player.username}
+                                                    <p>{player.favourite_position}</p>
+                                                </div>
+                                            </div>
                                         ))}
+                                        
+                                        {[...Array(gameDetails.team_limit - team.players.length)].map((_, i) => (
+                                            <div className='infodiv' key={`empty-${index}-${i}`}>
+                                             <img src='../../../../StockImgs/openspot.png' className='profilepic' alt="Player" />
+                                             <div className="player-info" onClick={() => handleJoinTeam(index)}>
+                                                    <p>Open spot</p>
+                                                    <p>Join game</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    
                                     </ul>
+                                    <button onClick={() => handleJoinTeam(index)} disabled={team.players.length >= gameDetails.team_limit}>
+                                        {team.players.length < gameDetails.team_limit ? 'Join Team' : 'Team Full'}
+                                    </button>
                                 </div>
                             ))}
                         </div>

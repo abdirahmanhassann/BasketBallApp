@@ -864,3 +864,111 @@ small {
   display: flex;
   justify-content: space-between;
 }
+.large-divider {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.game-details-container {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.teams-info {
+  margin-top: 20px;
+  display: flex;
+    flex-direction: row;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.team {
+  background: #f9f9f9;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 300px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;  
+}
+
+.team h4 {
+  margin: 0;
+  color: #333;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.player-list {
+  list-style: none;
+  padding: 0;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.player-position {
+  font-size: 14px;
+  color: #666;
+}
+
+.profilepic{
+  height: 35px;
+  border-radius:50%;
+}
+
+.infodiv{
+  display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 11px;
+}

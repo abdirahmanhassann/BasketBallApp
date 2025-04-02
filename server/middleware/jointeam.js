@@ -10,7 +10,7 @@ async function jointeam (req, res, next)   {
     console.log('User email:', req.body);
     try {
         // Get user ID from email
-        const userQuery = 'SELECT id, username FROM users WHERE email = $1';
+        const userQuery = 'SELECT id, bio, email, gender, lastname, username, firstname, favourite_position FROM users WHERE email = $1';
         const userResult = await pool.query(userQuery, [userEmail]);
         console.log('User result:', userResult.rows);
         if (userResult.rows.length === 0) {
@@ -31,12 +31,12 @@ console.log(gameId)
         // Remove user from any previous team
         teams = teams.map(team => ({
             ...team,
-            players: team.players.filter(player => player.id !== userId)
+            players: team.players.filter(player => player.userId !== userId)
         }));
 
         // Add user to the selected team if not full
         if (teams[teamIndex].players.length < limit) {
-            teams[teamIndex].players.push({ id: userId, name: userName });
+            teams[teamIndex].players.push({ userId: userId, username: userName, email: userEmail, favourite_position: userResult.rows[0].favourite_position });
         } else {
             console.log('Team is full:', teams[teamIndex].players.length, limit);
             return res.status(400).json({ message: 'Team is full' });

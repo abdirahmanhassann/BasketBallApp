@@ -54,6 +54,7 @@ const createGamesTable = async () => {
             amount INTEGER DEFAULT 0
         );
     `;
+
     try {
         await pool.query(createTableQuery);
         console.log('Games table created or already exists.');
